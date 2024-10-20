@@ -3,14 +3,20 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
+  build-test-ci:
     runs-on: ubuntu-latest
     steps:
+      # 测试输出
+      - name: Log
+        run: 
+          echo "输出github"
+          echo "${{ toJSON(github) }}"
+          echo "输出secrets"
+          echo "${{ toJSON(secrets) }}"
+          echo "输出vars"
+          echo ${{ toJSON(vars) }}
       # 第一步 检测代码
       - name: Checkout code
         uses: actions/checkout@v2
