@@ -1,4 +1,5 @@
 <template>
+  <h1>测试</h1>
   <img alt="Vue logo" src="./assets/logo.png">
 </template>
 

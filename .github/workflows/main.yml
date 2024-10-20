@@ -1,37 +1,36 @@
-name: Build App and Deploy to Aliyun
-on: 
-  push:
+name: Build App, Squash Commits, and Deploy to Aliyun
+on:
+  pull_request:
+    types: [closed]
     branches:
       - main
 
 jobs:
-  build-test-ci:
+  build-squash-deploy:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      # 测试输出
-      - name: Log
-        run: 
-          echo "输出github"
-          echo "${{ toJSON(github) }}"
-          echo "输出secrets"
-          echo "${{ toJSON(secrets) }}"
-          echo "输出vars"
-          echo "${{ toJSON(vars) }}"
-      # 第一步 检测代码
       - name: Checkout code
         uses: actions/checkout@v2
-      # 第二步 设置node版本
+        with:
+          fetch-depth: 0
+
+      - name: Squash commits
+        run:
+          git checkout main
+          git merge --squash ${{github.ref_name}}
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '16'
-      # 第三步 安装依赖
+
       - name: Install npm dependencies
         run: npm install
-      # 第四步 打包
+
       - name: Run build task
         run: npm run build
-      # 第四步 上传至阿里云
+
       - name: Deploy to Aliyun
         uses: cross-the-world/scp-pipeline@master
         env:
