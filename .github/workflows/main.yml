@@ -12,9 +12,9 @@ jobs:
       - name: Log
         run: 
           echo "输出github"
-          echo "${{ toJSON(github) }}"
+          echo ${{ toJSON(github) }}
           echo "输出secrets"
-          echo "${{ toJSON(secrets) }}"
+          echo ${{ toJSON(secrets) }}
           echo "输出vars"
           echo ${{ toJSON(vars) }}
       # 第一步 检测代码
